@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36327.8 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsIconUtility", "WindowsIconUtility\WindowsIconUtility.csproj", "{A43A3D16-FDB7-4CD9-A8EA-00F18F8E30F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WindowsIconUtilityTestApp", "WindowsIconUtilityTestApp\WindowsIconUtilityTestApp.csproj", "{6536979F-6504-49E3-917C-73C4A8756277}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A43A3D16-FDB7-4CD9-A8EA-00F18F8E30F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A43A3D16-FDB7-4CD9-A8EA-00F18F8E30F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A43A3D16-FDB7-4CD9-A8EA-00F18F8E30F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A43A3D16-FDB7-4CD9-A8EA-00F18F8E30F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6536979F-6504-49E3-917C-73C4A8756277}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6536979F-6504-49E3-917C-73C4A8756277}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6536979F-6504-49E3-917C-73C4A8756277}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6536979F-6504-49E3-917C-73C4A8756277}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AA69870C-56C9-4596-BFEE-FBB8106E7D38}
+	EndGlobalSection
+EndGlobal
