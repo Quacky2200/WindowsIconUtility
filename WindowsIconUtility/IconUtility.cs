@@ -1,25 +1,22 @@
-﻿// IconUtility.IconExtractor
-// =========================
-// Resources: PInvoke, https://den.dev/blog/extract-icons-from-dll-windows/ and GPT.
-//
-// IconUtility retrieves EXE icons and associated file icons or thumbnails.
-//
-// Most extractors try to use ExtractIconEx but these will only contain small icons because they're
-// old NT functions, and may only save icons in use in the kernel / shell such as 16x16 and 32x32,
-// and may occasionally hold high-res icons for high-DPI screens.
-// 
-// Utilising LoadLibraryEx and FindResource, etc will load the executable into memory and retrieve
-// the metadata. The icon groups are read and saved however you wish.
-//
-// Most of the examples I've tried had many flaws. This is the best I could come up with.
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿/**
+ * WindowsIconUtility
+ * Copyright (C) 2025 Quacky2200
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ **/
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using static WindowsIconUtility.Windows;
 
