@@ -350,7 +350,7 @@ namespace WindowsIconUtility
 
             List<IconFile>? icons = (
                 exe != null ?
-                FindExeIcons(filePath) :
+                FindExeIcons(exe) :
                 [ GetAssociativeFileIcon(filePath, Math.Min(1024, targetWidth)) ]
             );
 
