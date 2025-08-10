@@ -18,6 +18,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using static WindowsIconUtility.Windows;
@@ -159,7 +161,7 @@ namespace WindowsIconUtility
 
         private static void Debug(string method, string msg)
         {
-            System.Diagnostics.Debug.WriteLine($"{method}():- ${msg}");
+            System.Diagnostics.Debug.WriteLine($"{method}():- {msg}");
         }
 
         private static bool MagicBytesMatch(byte[] source, byte[] pattern, int offset = 0)
@@ -186,7 +188,7 @@ namespace WindowsIconUtility
         /// <param name="entry">Icon Group Entry (icon set metadata)</param>
         /// <returns>True on successful save</returns>
         /// <exception cref="InvalidIconEntryException">The icon resource cannot be found</exception>
-        internal static IconFile? GetIconFile(string exePath, IntPtr hModule, GRPICONDIRENTRY entry)
+        internal static IconFile GetIconFile(string exePath, IntPtr hModule, GRPICONDIRENTRY entry)
         {
             // Load icon raw resource
             IntPtr iconRes = FindResource(hModule, (IntPtr)entry.ID, (IntPtr)3); // RT_ICON = 3
@@ -219,7 +221,7 @@ namespace WindowsIconUtility
         /// <param name="exePath">Executable path</param>
         /// <remarks>This is a generic method. Use this if you want metadata, otherwise use the GetIcons methods.</remarks>
         /// <returns>List of IconFile which can have 0 results or return null. NOTE: Check for null before use!</returns>
-        public static List<IconFile>? FindExeIcons(string exePath)
+        public static List<IconFile> FindExeIcons(string exePath)
         {
             IntPtr hModule = LoadLibraryEx(exePath, IntPtr.Zero, LOAD_LIBRARY_AS_DATAFILE);
             if (hModule == IntPtr.Zero)
@@ -269,7 +271,7 @@ namespace WindowsIconUtility
                 FreeLibrary(hModule);
             }
 
-            if (iconFiles.Count == 0 && FallbackExeToIcon) iconFiles = [ GetAssociativeFileIcon(exePath) ];
+            if (iconFiles.Count == 0 && FallbackExeToIcon) iconFiles = new List<IconFile> { GetAssociativeFileIcon(exePath) };
 
             return OrderMethod(iconFiles).ToList();
         }
@@ -281,9 +283,9 @@ namespace WindowsIconUtility
         /// <returns>List of icons or empty list</returns>
         public static List<Icon> GetExeIcons(string exePath)
         {
-            List<IconFile>? iconFiles = FindExeIcons(exePath);
+            List<IconFile> iconFiles = FindExeIcons(exePath);
 
-            List<Icon> iconObjs = [];
+            List<Icon> iconObjs = new List<Icon>();
 
             if (iconFiles == null) return iconObjs; // Empty
 
@@ -310,7 +312,7 @@ namespace WindowsIconUtility
         {
             bool success = false;
 
-            List<IconFile>? iconFiles = FindExeIcons(exePath);
+            List<IconFile> iconFiles = FindExeIcons(exePath);
 
             if (iconFiles == null || (iconFiles != null && iconFiles.Count == 0)) return false;
 
@@ -347,17 +349,17 @@ namespace WindowsIconUtility
             return dest;
         }
 
-        public static Bitmap? GetBestIcon(string filePath, int targetWidth, float downscaleThreshold = 1.25f, float upscaleThreshold = 0.1f)
+        public static Bitmap GetBestIcon(string filePath, int targetWidth, float downscaleThreshold = 1.25f, float upscaleThreshold = 0.1f)
         {
             var exe = getExePath(filePath);
 
-            List<IconFile>? icons = (
+            List<IconFile> icons = (
                 exe != null ?
                 FindExeIcons(exe) :
-                [ GetAssociativeFileIcon(filePath, Math.Min(1024, targetWidth)) ]
+                new List<IconFile> { GetAssociativeFileIcon(filePath, Math.Min(1024, targetWidth)) }
             );
 
-            IconFile? best = null;
+            IconFile best = null;
             int bestDiff = int.MaxValue;
             int bestWidth = 0;
 
@@ -388,7 +390,7 @@ namespace WindowsIconUtility
                 return image;
         }
 
-        public static IconFile? GetAssociativeFileIcon(string filePath, int size = 256)
+        public static IconFile GetAssociativeFileIcon(string filePath, int size = 256)
         {
             var iidFactory = typeof(IShellItemImageFactory).GUID;
             SHCreateItemFromParsingName(filePath, IntPtr.Zero, ref iidFactory, out var nativeItem);
@@ -428,7 +430,7 @@ namespace WindowsIconUtility
             }
         }
 
-        public static string? getExePath(string file)
+        public static string getExePath(string file)
         {
             if (Path.GetExtension(file).Equals(".exe", StringComparison.OrdinalIgnoreCase)) return file;
 
@@ -442,11 +444,11 @@ namespace WindowsIconUtility
 
             return null;
         }
-        public static string? GetLnkTargetPath(string lnkPath)
+        public static string GetLnkTargetPath(string lnkPath)
         {
             // You'll only get 32-bit paths if building this app as x86. Make sure to untick 'Prefer x86'
             // The majority will be running x64 since Windows 10.
-            Type? shellType = Type.GetTypeFromProgID("WScript.Shell");
+            Type shellType = Type.GetTypeFromProgID("WScript.Shell");
 
             if (shellType != null)
             {
